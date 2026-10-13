@@ -37,6 +37,9 @@ _KNOWN_PATHS = [
 
 def find_chrome(explicit: str | None = None) -> str:
     if explicit:
+        if not os.path.exists(explicit):
+            raise FileNotFoundError(
+                f"Chrome binary not found at explicit path: {explicit}")
         return explicit
     env = os.environ.get("SPECTERX_CHROME")
     if env and os.path.exists(env):

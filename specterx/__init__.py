@@ -8,7 +8,7 @@ Modules:
     solver      challenge detection + solve state machine
     session     SQLite cookie/session persistence
 """
-from .solver import solve, SolverResult
+from .solver import SolverResult, solve
 
-__all__ = ["solve", "SolverResult"]
+__all__ = ["SolverResult", "solve"]
 __version__ = "0.1.0"

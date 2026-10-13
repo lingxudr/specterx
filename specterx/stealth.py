@@ -70,11 +70,6 @@ def build(fp: dict) -> str:
   const _p1 = WebGLRenderingContext.prototype.getParameter;
   const _p2 = typeof WebGL2RenderingContext !== "undefined"
     ? WebGL2RenderingContext.prototype.getParameter : null;
-  const spoofGL = function (p) {
-    if (p === 37445) return C.webglVendor;
-    if (p === 37446) return C.webglRenderer;
-    return (_p1 === this.getParameter ? _p1 : _p1).call(this, p);
-  };
   WebGLRenderingContext.prototype.getParameter = mask(function (p) {
     if (p === 37445) return C.webglVendor;
     if (p === 37446) return C.webglRenderer;
@@ -127,17 +122,24 @@ def build(fp: dict) -> str:
 
   // ---- screen ----
   const scr = screen;
-  const sdef = (p, v) => { try { Object.defineProperty(scr, p, { get: mask(() => v), configurable: true }); } catch (e) {} };
+  const sdef = (p, v) => {
+    try { Object.defineProperty(scr, p, { get: mask(() => v), configurable: true }); }
+    catch (e) {}
+  };
   sdef("width", C.screenW); sdef("height", C.screenH);
   sdef("availWidth", C.availW); sdef("availHeight", C.availH);
   sdef("colorDepth", C.colorDepth); sdef("pixelDepth", C.pixelDepth);
   try {
-    Object.defineProperty(window, "devicePixelRatio", { get: mask(() => C.dpr), configurable: true });
+    Object.defineProperty(window, "devicePixelRatio",
+      { get: mask(() => C.dpr), configurable: true });
   } catch (e) {}
 
   // ---- touch ----
   if (C.mobile) {
-    try { Object.defineProperty(window, "ontouchstart", { get: mask(() => null), configurable: true }); } catch (e) {}
+    try {
+      Object.defineProperty(window, "ontouchstart",
+        { get: mask(() => null), configurable: true });
+    } catch (e) {}
     try { navigator.maxTouchPoints; } catch (e) {}
   }
 

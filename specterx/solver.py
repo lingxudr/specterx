@@ -13,6 +13,7 @@ Retries with a fresh profile when the fingerprint looks burned.
 from __future__ import annotations
 
 import asyncio
+import json
 import math
 import random
 import time
@@ -76,8 +77,11 @@ def _bezier(p0, p1, p2, p3, n):
     pts = []
     for i in range(n + 1):
         t = i / n
-        x = (1 - t) ** 3 * p0[0] + 3 * (1 - t) ** 2 * t * p1[0] + 3 * (1 - t) * t ** 2 * p2[0] + t ** 3 * p3[0]
-        y = (1 - t) ** 3 * p0[1] + 3 * (1 - t) ** 2 * t * p1[1] + 3 * (1 - t) * t ** 2 * p2[1] + t ** 3 * p3[1]
+        u = 1 - t
+        x = (u ** 3 * p0[0] + 3 * u ** 2 * t * p1[0]
+             + 3 * u * t ** 2 * p2[0] + t ** 3 * p3[0])
+        y = (u ** 3 * p0[1] + 3 * u ** 2 * t * p1[1]
+             + 3 * u * t ** 2 * p2[1] + t ** 3 * p3[1])
         pts.append((x, y))
     return pts
 
@@ -175,7 +179,7 @@ async def _solve_once(url: str, profile: str, timeout: float,
             await asyncio.sleep(2.5)
             try:
                 raw = await cdp.js(_DETECT_JS, timeout=10)
-                info = __import__("json").loads(raw) if isinstance(raw, str) else {}
+                info = json.loads(raw) if isinstance(raw, str) else {}
             except Exception:
                 continue
             ctype = _classify(info)

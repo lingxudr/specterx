@@ -6,7 +6,6 @@ from __future__ import annotations
 import hashlib
 import random
 
-
 MOBILE = {
     "name": "android_chrome_mid",
     "ua": ("Mozilla/5.0 (Linux; Android 13; 2201117PG) AppleWebKit/537.36 "
@@ -47,7 +46,8 @@ DESKTOP = {
     "pixel_depth": 24,
     "device_pixel_ratio": 1.0,
     "webgl_vendor": "Google Inc. (NVIDIA)",
-    "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 SUPER Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "webgl_renderer": ("ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 SUPER "
+                         "Direct3D11 vs_5_0 ps_5_0, D3D11)"),
     "mobile": False,
     "touch": False,
     "languages": ["en-US", "en"],
